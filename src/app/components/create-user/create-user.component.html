@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="card">
+    <h1>Welcome to Bingo Game</h1>
+    <p class="subtitle">Create your account to get started</p>
+
+    <form (ngSubmit)="onCreateUser()">
+      <div class="form-group">
+        <label for="userName">Enter Your Name:</label>
+        <input
+          id="userName"
+          type="text"
+          [(ngModel)]="userName"
+          name="userName"
+          placeholder="Your name"
+          [disabled]="isLoading"
+          class="input-field"
+        />
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="isLoading"
+        class="btn-primary"
+      >
+        {{ isLoading ? 'Creating...' : 'Create Account' }}
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+.my-room {
+    border: 2px solid #667eea;
+    background: linear-gradient(135deg, #f0f4ff 0%, #e6f2ff 100%);
+}
+
+.button-group-horizontal {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.button-group-horizontal button {
+    flex: 1;
+    margin: 0;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
+}
+
+.btn-success:disabled {
+    background: #cbd5e0;
+    cursor: not-allowed;
+    transform: none;
+}

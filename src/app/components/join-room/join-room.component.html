@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="card">
+    <h1>Join a Room</h1>
+    <p class="subtitle">Select a room to join</p>
+
+    <div *ngIf="isLoading" class="loading-message">
+      Loading rooms...
+    </div>
+
+    <div *ngIf="!isLoading && rooms.length === 0" class="empty-message">
+      No rooms available. Create a new room to get started.
+    </div>
+
+    <div *ngIf="!isLoading && rooms.length > 0" class="rooms-list">
+      <div *ngFor="let room of rooms" class="room-card">
+        <h3>{{ room.name }}</h3>
+        <p class="room-status" [class.active]="room.status === 'active'">
+          Status: {{ room.status }}
+        </p>
+        <button
+          (click)="onJoinRoom(room.id)"
+          class="btn-primary"
+        >
+          Join Room
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <button
+      (click)="onNavigateBack()"
+      class="btn-secondary"
+      style="margin-top: 20px; width: 100%;"
+    >
+      Back
+    </button>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="container">
+  <div class="draw-container">
+    <h1>Bingo Game - Draw Board</h1>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <div class="game-status">
+      <div class="last-number">
+        <h2>Last Number Drawn</h2>
+        <div class="number-display" *ngIf="lastNumber">
+          {{ lastNumber }}
+        </div>
+        <div class="number-display empty" *ngIf="!lastNumber">
+          -
+        </div>
+      </div>
+
+      <div class="drawn-numbers">
+        <h2>All Drawn Numbers</h2>
+        <div class="numbers-grid">
+          <div *ngFor="let num of drawnNumbers" class="number-chip">
+            {{ num }}
+          </div>
+        </div>
+        <div *ngIf="drawnNumbers.length === 0" class="empty-message">
+          No numbers drawn yet
+        </div>
+      </div>
+    </div>
+
+    <div class="game-controls">
+      <button
+        (click)="onDrawNumber()"
+        [disabled]="isDrawing || gameEnded"
+        class="btn-draw"
+      >
+        {{ isDrawing ? 'Drawing...' : gameEnded ? 'Game Ended' : 'Draw Next Number' }}
+      </button>
+    </div>
+
+    <div class="button-group">
+      <button (click)="onBack()" class="btn-secondary">
+        Back to Ticket
+      </button>
+    </div>
+  </div>
+</div>

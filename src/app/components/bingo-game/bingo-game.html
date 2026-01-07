@@ -1,0 +1,84 @@
+<div class="container">
+    <!-- Header Spanning Full Width -->
+    <div class="game-header">
+        <h1>🎮 Bingo Game</h1>
+        <div class="header-info">
+            <span class="player-badge">👤 {{ userName }}</span>
+            <div class="bingo-header-letters">
+                <div *ngFor="let letter of bingoLetters; let i = index" class="header-letter"
+                    [class.marked]="markedBingoLetters[i]">
+                    {{ letter }}
+                </div>
+            </div>
+            <button class="btn-secondary btn-sm" (click)="backToLobby()">
+                🚪 Leave
+            </button>
+        </div>
+    </div>
+
+    <div class="split-layout">
+        <!-- LEFT PANEL: TICKET -->
+        <div class="left-panel">
+            <div class="ticket-card">
+                <div class="ticket-header">
+                    <h3>🎫 Your Ticket</h3>
+                    <div class="lines-tracker">
+                        <span>Lines: </span>
+                        <span class="count">{{ getCompletedLinesCount() }}/5</span>
+                    </div>
+                </div>
+
+                <div class="ticket-wrapper">
+                    <table class="bingo-grid">
+                        <thead>
+                            <tr>
+                                <th *ngFor="let l of bingoLetters">{{ l }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of myTicket.numbers; let i = index">
+                                <td *ngFor="let num of row; let j = index" (click)="onTicketCellClick(num)"
+                                    [class.called]="isNumberCalled(num)" [class.marked]="isMarked(i, j)"
+                                    [class.clickable-turn]="isMyTurn && !isNumberCalled(num)">
+                                    {{ num }}
+                                    <div class="mark-indicator" *ngIf="isMarked(i, j)">✓</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="ticket-legend">
+                    <div class="legend-item"><span class="legend-box called"></span> Called</div>
+                    <div class="legend-item"><span class="legend-box marked"></span> Marked</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL: GAME CONTROLS -->
+        <div class="right-panel">
+            <!-- 1. Turn Status -->
+            <div class="status-card" [class.my-turn]="isMyTurn">
+                <h2>
+                    {{ isMyTurn ? '🎯 YOUR TURN' : '⏳ OPPONENT\'S TURN' }}
+                </h2>
+                <p class="status-sub">
+                    {{ isMyTurn ? 'Click a number on your ticket to call it!' : 'Waiting for opponent...' }}
+                </p>
+            </div>
+
+            <!-- Panel removed as requested -->
+
+            <!-- 3. Called Numbers History -->
+            <div class="history-card">
+                <h3>📋 History ({{ calledNumbers.length }})</h3>
+                <div class="history-grid">
+                    <span *ngFor="let num of calledNumbers.slice().reverse()" class="history-chip">
+                        {{ num }}
+                    </span>
+                    <span *ngIf="calledNumbers.length === 0" class="empty-text">No numbers called</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

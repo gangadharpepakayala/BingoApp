@@ -1,0 +1,67 @@
+<div class="container">
+  <div class="card lobby-container">
+    <h1>🎮 Bingo 2 - Game Lobby</h1>
+    <p class="subtitle">Welcome, <strong>{{ userName }}</strong>!</p>
+
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+
+    <div class="button-group" style="margin-bottom: 30px;">
+      <button class="btn-primary" (click)="createNewRoom()">
+        ➕ Create New Room
+      </button>
+      <button class="btn-secondary" (click)="logout()">
+        🚪 Logout
+      </button>
+    </div>
+
+    <!-- My Active Rooms -->
+    <div *ngIf="myRooms.length > 0" style="margin-bottom: 30px;">
+      <h2>📌 My Active Rooms</h2>
+      <div class="rooms-grid">
+        <div class="room-card my-room" *ngFor="let room of myRooms">
+          <h3>{{ room.roomName }}</h3>
+
+          <div class="room-info">
+            <span class="room-status" [ngClass]="room.status">
+              {{ room.status === 'pending' ? '⏳ Waiting' : '🎮 Active' }}
+            </span>
+            <span class="player-count">{{ room.playerCount }}/2</span>
+          </div>
+
+          <div class="button-group-horizontal">
+            <button class="btn-success" (click)="joinRoom(room)" [disabled]="loading || room.playerCount >= 2">
+              {{ room.playerCount >= 2 ? '🔒 Full' : '✅ Join' }}
+            </button>
+            <button class="btn-danger" (click)="deleteRoom(room.gameRoomId)">
+              🗑️ Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>🌐 All Available Rooms</h2>
+
+    <div *ngIf="rooms.length === 0" class="empty-message">
+      <p>No rooms available. Create one to start playing!</p>
+    </div>
+
+    <div class="rooms-grid" *ngIf="rooms.length > 0">
+      <div class="room-card" *ngFor="let room of rooms">
+        <h3>{{ room.roomName }}</h3>
+
+        <div class="room-info">
+          <span class="room-status" [ngClass]="room.status">
+            {{ room.status === 'pending' ? '⏳ Waiting' : '🎮 Active' }}
+          </span>
+          <span class="player-count">{{ room.playerCount }}/2</span>
+        </div>
+
+        <button class="btn-success" (click)="joinRoom(room)"
+          [disabled]="loading || room.playerCount >= 2 || room.status === 'active'">
+          {{ room.playerCount >= 2 ? '🔒 Full' : room.status === 'active' ? '🎮 In Progress' : '✅ Join Room' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="card">
+    <h1>Create or Join a Room</h1>
+    <p class="subtitle">Hi {{ userName }}, let's play!</p>
+
+    <div class="form-container">
+      <form (ngSubmit)="onCreateRoom()">
+        <h2>Create New Room</h2>
+        <div class="form-group">
+          <label for="roomName">Room Name:</label>
+          <input id="roomName" type="text" [(ngModel)]="roomName" name="roomName" placeholder="Enter room name"
+            [disabled]="isLoading" class="input-field" />
+        </div>
+
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+
+        <button type="submit" [disabled]="isLoading" class="btn-primary">
+          {{ isLoading ? 'Creating...' : 'Create Room' }}
+        </button>
+      </form>
+
+      <div class="divider">OR</div>
+
+      <div class="join-section">
+        <h2>Join Existing Room</h2>
+        <button type="button" (click)="onNavigateToJoin()" class="btn-secondary">
+          ⬅️ Back to Lobby
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="ticket-container">
+    <h1>Your Bingo Ticket</h1>
+
+    <div *ngIf="isLoading" class="loading-message">
+      Loading your ticket...
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!isLoading && ticket.length > 0" class="ticket-board">
+      <table class="bingo-grid">
+        <thead>
+          <tr>
+            <th *ngFor="let col of [0,1,2,3,4]" [class.col-complete]="isColumnComplete(col)">
+              {{ ['B', 'I', 'N', 'G', 'O'][col] }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of [0,1,2,3,4]" [class]="getRowClass(row)">
+            <td
+              *ngFor="let col of [0,1,2,3,4]"
+              [class.marked]="isNumberMarked(ticket[row][col])"
+              [class.drawn]="isNumberDrawn(ticket[row][col])"
+              [class.disabled]="!isNumberDrawn(ticket[row][col])"
+              (click)="onMarkNumber(ticket[row][col])"
+            >
+              {{ ticket[row][col] }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-section">
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-color drawn"></div>
+          <span>Drawn Numbers</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color marked"></div>
+          <span>Marked Numbers</span>
+        </div>
+      </div>
+
+      <div class="line-count">
+        <div>Completed Rows: <span>{{ getCompletedRowCount() }}</span></div>
+        <div>Completed Columns: <span>{{ getCompletedColumnCount() }}</span></div>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button (click)="onStartGame()" class="btn-primary">
+        Start Game
+      </button>
+      <button (click)="onBack()" class="btn-secondary">
+        Back
+      </button>
+    </div>
+  </div>
+</div>
