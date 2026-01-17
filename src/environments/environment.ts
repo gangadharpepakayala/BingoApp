@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7201'
+  apiUrl: 'https://bingo-back-xbxz.onrender.com'
 };
