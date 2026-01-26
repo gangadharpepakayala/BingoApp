@@ -10,6 +10,11 @@ interface Ticket {
   marked: boolean[][];
 }
 
+interface DrawnNumberEvent {
+  number: number;
+  playerId: string | null;
+}
+
 @Component({
   selector: 'app-bingo-game',
   standalone: true,
@@ -24,6 +29,7 @@ export class BingoGameComponent implements OnInit, OnDestroy {
 
   myTicket: Ticket = { numbers: [], marked: [] };
   calledNumbers: number[] = [];
+  drawnHistory: DrawnNumberEvent[] = []; // Track history
   bingoLetters = ['B', 'I', 'N', 'G', 'O'];
   markedBingoLetters: boolean[] = [false, false, false, false, false];
 
@@ -125,8 +131,17 @@ export class BingoGameComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data) => {
           if (data && data.drawnNumbers) {
-            // Ensure strict number type for consistent comparison
-            this.calledNumbers = data.drawnNumbers.map((n: any) => Number(n));
+            // Map the drawn numbers object with checks for mixed casing
+            this.drawnHistory = data.drawnNumbers.map((d: any) => ({
+              number: Number(d.number !== undefined ? d.number : d.Number),
+              playerId: (d.playerId !== undefined ? d.playerId : d.PlayerId) || null
+            }));
+
+            // Backward compatibility / safety check
+            this.calledNumbers = this.drawnHistory
+              .map(d => d.number)
+              .filter(n => !isNaN(n));
+
             this.autoMarkNumbers();
           }
         },
@@ -163,12 +178,14 @@ export class BingoGameComponent implements OnInit, OnDestroy {
     // Call the number
     this.http.post(`${environment.apiUrl}/api/draw`, {
       roomId: this.roomId,
+      playerId: this.playerId, // Send Player ID
       number: num
     }).subscribe({
       next: () => {
         // Optimistic update for instant feedback
         if (!this.calledNumbers.includes(num)) {
           this.calledNumbers.push(num);
+          this.drawnHistory.push({ number: num, playerId: this.playerId });
           this.autoMarkNumbers();
         }
 
@@ -284,12 +301,14 @@ export class BingoGameComponent implements OnInit, OnDestroy {
             // Store winner info for the winner page
             const winnerInfo = {
               playerId: data.playerId,
-              playerName: data.winnerName
+              playerName: data.winnerName,
+              isDraw: data.isDraw || false
             };
 
             // Backup in storage
             sessionStorage.setItem('winnerId', winnerInfo.playerId);
             sessionStorage.setItem('winnerName', winnerInfo.playerName);
+            sessionStorage.setItem('isDraw', String(winnerInfo.isDraw));
 
             this.winner = winnerInfo.playerName;
 
@@ -317,5 +336,14 @@ export class BingoGameComponent implements OnInit, OnDestroy {
 
   backToLobby() {
     this.router.navigate(['/lobby']);
+  }
+
+  isMyPick(num: number): boolean {
+    return this.drawnHistory.some(d => d.number === num && d.playerId === this.playerId);
+  }
+
+  isOppPick(num: number): boolean {
+    // If it's in history but NOT my ID, it's opp (or null if legacy)
+    return this.drawnHistory.some(d => d.number === num && d.playerId !== this.playerId && d.playerId !== null);
   }
 }

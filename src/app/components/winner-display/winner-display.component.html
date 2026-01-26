@@ -4,10 +4,16 @@
       <h1 class="celebration-title">🎉 BINGO! 🎉</h1>
     </div>
 
-    <div class="winner-info" *ngIf="winner">
+    <div class="winner-info" *ngIf="winner && !winner.isDraw">
       <h2>We have a winner!</h2>
       <p class="winner-name">{{ winner.playerName }}</p>
       <p class="congratulations">Congratulations on your victory!</p>
+    </div>
+
+    <div class="winner-info" *ngIf="winner && winner.isDraw">
+      <h2>It's a Draw!</h2>
+      <p class="winner-name">Good Game!</p>
+      <p class="congratulations">Both players achieved Bingo!</p>
     </div>
 
     <div class="winner-info" *ngIf="!winner">

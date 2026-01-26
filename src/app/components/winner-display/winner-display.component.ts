@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class WinnerDisplayComponent implements OnInit {
   private router = inject(Router);
 
-  winner: { playerId: string; playerName: string } | null = null;
+  winner: { playerId: string; playerName: string; isDraw?: boolean } | null = null;
   userName: string = '';
 
   ngOnInit(): void {
@@ -24,8 +24,10 @@ export class WinnerDisplayComponent implements OnInit {
     if (!this.winner) {
       const winnerId = sessionStorage.getItem('winnerId');
       const winnerName = sessionStorage.getItem('winnerName');
+      const isDraw = sessionStorage.getItem('isDraw') === 'true';
+
       if (winnerId && winnerName) {
-        this.winner = { playerId: winnerId, playerName: winnerName };
+        this.winner = { playerId: winnerId, playerName: winnerName, isDraw: isDraw };
       }
     }
   }

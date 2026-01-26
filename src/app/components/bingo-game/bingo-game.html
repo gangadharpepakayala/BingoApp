@@ -16,6 +16,18 @@
         </div>
     </div>
 
+    <!-- STATUS BANNER (MOVED HERE FOR RESPONSIVENESS) -->
+    <div class="status-banner-container">
+        <div class="status-card" [class.my-turn]="isMyTurn">
+            <h2>
+                {{ isMyTurn ? '🎯 YOUR TURN' : '⏳ OPPONENT\'S TURN' }}
+            </h2>
+            <p class="status-sub">
+                {{ isMyTurn ? 'Click a number on your ticket to call it!' : 'Waiting for opponent...' }}
+            </p>
+        </div>
+    </div>
+
     <div class="split-layout">
         <!-- LEFT PANEL: TICKET -->
         <div class="left-panel">
@@ -39,6 +51,7 @@
                             <tr *ngFor="let row of myTicket.numbers; let i = index">
                                 <td *ngFor="let num of row; let j = index" (click)="onTicketCellClick(num)"
                                     [class.called]="isNumberCalled(num)" [class.marked]="isMarked(i, j)"
+                                    [class.my-pick]="isMyPick(num)" [class.opp-pick]="isOppPick(num)"
                                     [class.clickable-turn]="isMyTurn && !isNumberCalled(num)">
                                     {{ num }}
                                     <div class="mark-indicator" *ngIf="isMarked(i, j)">✓</div>
@@ -49,23 +62,15 @@
                 </div>
 
                 <div class="ticket-legend">
-                    <div class="legend-item"><span class="legend-box called"></span> Called</div>
-                    <div class="legend-item"><span class="legend-box marked"></span> Marked</div>
+                    <div class="legend-item"><span class="legend-box my-pick-legend"></span> You (Green)</div>
+                    <div class="legend-item"><span class="legend-box opp-pick-legend"></span> Opponent (Blue)</div>
                 </div>
             </div>
         </div>
 
         <!-- RIGHT PANEL: GAME CONTROLS -->
         <div class="right-panel">
-            <!-- 1. Turn Status -->
-            <div class="status-card" [class.my-turn]="isMyTurn">
-                <h2>
-                    {{ isMyTurn ? '🎯 YOUR TURN' : '⏳ OPPONENT\'S TURN' }}
-                </h2>
-                <p class="status-sub">
-                    {{ isMyTurn ? 'Click a number on your ticket to call it!' : 'Waiting for opponent...' }}
-                </p>
-            </div>
+            <!-- Status Card Removed -->
 
             <!-- Panel removed as requested -->
 
@@ -73,10 +78,12 @@
             <div class="history-card">
                 <h3>📋 History ({{ calledNumbers.length }})</h3>
                 <div class="history-grid">
-                    <span *ngFor="let num of calledNumbers.slice().reverse()" class="history-chip">
-                        {{ num }}
+                    <span *ngFor="let item of drawnHistory.slice().reverse()" class="history-chip"
+                        [class.my-pick]="item.playerId === playerId"
+                        [class.opp-pick]="item.playerId !== null && item.playerId !== playerId">
+                        {{ item.number }}
                     </span>
-                    <span *ngIf="calledNumbers.length === 0" class="empty-text">No numbers called</span>
+                    <span *ngIf="drawnHistory.length === 0" class="empty-text">No numbers called</span>
                 </div>
             </div>
         </div>
