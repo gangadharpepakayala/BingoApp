@@ -16,7 +16,8 @@ body {
   overflow-x: hidden;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -44,7 +45,7 @@ app-root {
   left: 0;
   width: 100%;
   height: 100%;
-  background: 
+  background:
     radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
     radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
   animation: pulse 8s ease-in-out infinite;
@@ -52,8 +53,15 @@ app-root {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 .card {
@@ -74,6 +82,7 @@ app-root {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -272,9 +281,19 @@ h2 {
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-10px); }
-  75% { transform: translateX(10px); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-10px);
+  }
+
+  75% {
+    transform: translateX(10px);
+  }
 }
 
 .success-message {
@@ -417,8 +436,13 @@ h2 {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .waiting-info {
@@ -637,9 +661,17 @@ h2 {
 }
 
 @keyframes pop {
-  0% { transform: scale(0.8); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0.8);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .number-display.empty {
@@ -715,8 +747,13 @@ h2 {
 }
 
 @keyframes rotate {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to { transform: translate(-50%, -50%) rotate(360deg); }
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
 .celebration {
@@ -738,8 +775,15 @@ h2 {
 }
 
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
 }
 
 .winner-info {
@@ -788,22 +832,67 @@ h2 {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+
   .card,
   .ticket-container,
   .draw-container,
   .winner-card {
-    padding: 24px;
+    padding: 16px;
+    max-width: 340px;
+    /* Constrain width on mobile */
+    margin: 0 auto;
   }
 
   h1 {
-    font-size: 28px;
+    font-size: 24px;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Compact Ticket Board for Mobile */
+  .bingo-grid {
+    border-spacing: 4px;
+    margin-bottom: 12px;
   }
 
   .bingo-grid th,
   .bingo-grid td {
-    padding: 14px;
-    font-size: 18px;
+    padding: 8px;
+    /* DRASTICALLY reduced from 18px */
+    font-size: 14px;
+    /* Reduced from 20px */
+    border-radius: 6px;
   }
+
+  .bingo-grid td {
+    min-height: 40px;
+    /* Reduced from 70px */
+    height: 40px;
+    /* Force height to check */
+  }
+
+  .info-section {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .line-count span {
+    font-size: 16px;
+  }
+
+  .legend {
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .legend-item {
+    font-size: 12px;
+  }
+
+  .legend-color {
+    width: 24px;
+    height: 24px;
+  }
+
 
   .game-status {
     grid-template-columns: 1fr;

@@ -14,11 +14,13 @@ export class WinnerDisplayComponent implements OnInit {
 
   winner: { playerId: string; playerName: string; isDraw?: boolean } | null = null;
   userName: string = '';
+  currentPlayerId: string = '';
 
   ngOnInit(): void {
     const state = this.router.getCurrentNavigation()?.extras.state || history.state;
     this.winner = state?.winner || null;
     this.userName = sessionStorage.getItem('userName') || 'Player';
+    this.currentPlayerId = sessionStorage.getItem('playerId') || '';
 
     // If no winner data, try to get it from sessionStorage
     if (!this.winner) {
@@ -30,6 +32,18 @@ export class WinnerDisplayComponent implements OnInit {
         this.winner = { playerId: winnerId, playerName: winnerName, isDraw: isDraw };
       }
     }
+  }
+
+  isWinner(): boolean {
+    return this.winner?.playerId === this.currentPlayerId && !this.winner?.isDraw;
+  }
+
+  isLoser(): boolean {
+    return !!this.winner && this.winner.playerId !== this.currentPlayerId && !this.winner?.isDraw;
+  }
+
+  isDraw(): boolean {
+    return this.winner?.isDraw === true;
   }
 
   onPlayAgain(): void {

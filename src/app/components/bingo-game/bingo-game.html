@@ -4,12 +4,6 @@
         <h1>🎮 Bingo Game</h1>
         <div class="header-info">
             <span class="player-badge">👤 {{ userName }}</span>
-            <div class="bingo-header-letters">
-                <div *ngFor="let letter of bingoLetters; let i = index" class="header-letter"
-                    [class.marked]="markedBingoLetters[i]">
-                    {{ letter }}
-                </div>
-            </div>
             <button class="btn-secondary btn-sm" (click)="backToLobby()">
                 🚪 Leave
             </button>
@@ -25,6 +19,14 @@
             <p class="status-sub">
                 {{ isMyTurn ? 'Click a number on your ticket to call it!' : 'Waiting for opponent...' }}
             </p>
+
+            <!-- BINGO Letters moved here -->
+            <div class="bingo-status-letters">
+                <div *ngFor="let letter of bingoLetters; let i = index" class="status-letter"
+                    [class.marked]="markedBingoLetters[i]">
+                    {{ letter }}
+                </div>
+            </div>
         </div>
     </div>
 

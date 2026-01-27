@@ -7,3 +7,43 @@
   margin: 0 auto;
   max-width: 500px;
 }
+
+/* Loser-specific styles */
+.loser-view {
+  .loser-title {
+    background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: none !important;
+  }
+
+  .loser-message {
+    color: #ef4444;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .winner-announcement {
+    font-size: 1.25rem;
+    color: #64748b;
+    margin: 1rem 0;
+
+    .winner-name {
+      color: #10b981;
+      font-weight: 800;
+      font-size: 1.5rem;
+    }
+  }
+}
+
+/* Winner-specific styles */
+.winner-view {
+  .winner-message {
+    color: #10b981;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+}

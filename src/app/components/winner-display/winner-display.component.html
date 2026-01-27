@@ -1,22 +1,39 @@
 <div class="container">
   <div class="winner-card">
-    <div class="celebration">
+    <!-- Winner View -->
+    <div *ngIf="isWinner()" class="celebration winner-view">
       <h1 class="celebration-title">🎉 BINGO! 🎉</h1>
+      <div class="winner-info">
+        <h2 class="winner-message">You are the Winner!</h2>
+        <p class="winner-name">{{ userName }}</p>
+        <p class="congratulations">Congratulations on your victory!</p>
+      </div>
     </div>
 
-    <div class="winner-info" *ngIf="winner && !winner.isDraw">
-      <h2>We have a winner!</h2>
-      <p class="winner-name">{{ winner.playerName }}</p>
-      <p class="congratulations">Congratulations on your victory!</p>
+    <!-- Loser View -->
+    <div *ngIf="isLoser()" class="celebration loser-view">
+      <h1 class="celebration-title loser-title">😔 Game Over</h1>
+      <div class="winner-info">
+        <h2 class="loser-message">You Lost</h2>
+        <p class="winner-announcement">
+          <span class="winner-name">{{ winner?.playerName }}</span> is the Winner!
+        </p>
+        <p class="congratulations">Better luck next time!</p>
+      </div>
     </div>
 
-    <div class="winner-info" *ngIf="winner && winner.isDraw">
-      <h2>It's a Draw!</h2>
-      <p class="winner-name">Good Game!</p>
-      <p class="congratulations">Both players achieved Bingo!</p>
+    <!-- Draw View -->
+    <div *ngIf="isDraw()" class="celebration draw-view">
+      <h1 class="celebration-title">🎉 BINGO! 🎉</h1>
+      <div class="winner-info">
+        <h2>It's a Draw!</h2>
+        <p class="winner-name">Good Game!</p>
+        <p class="congratulations">Both players achieved Bingo!</p>
+      </div>
     </div>
 
-    <div class="winner-info" *ngIf="!winner">
+    <!-- No Winner Data -->
+    <div *ngIf="!winner" class="winner-info">
       <h2>Game Over!</h2>
       <p class="info-text">Thanks for playing!</p>
     </div>
