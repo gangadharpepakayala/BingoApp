@@ -39,11 +39,11 @@
     </div>
 
     <div class="button-group">
-      <button (click)="onBack()" class="btn-primary">
-        New Game (Lobby)
+      <button *ngIf="isRoomCreator()" (click)="onStartNewGame()" class="btn-primary">
+        Start New Game
       </button>
-      <button (click)="onPlayAgain()" class="btn-secondary">
-        Exit (Logout)
+      <button (click)="onGameLobby()" class="btn-secondary">
+        Game Lobby
       </button>
     </div>
   </div>

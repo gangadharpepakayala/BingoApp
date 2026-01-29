@@ -59,6 +59,8 @@ export class CreateRoomComponent implements OnInit {
             next: (joinResponse) => {
               this.isLoading = false;
               sessionStorage.setItem('playerId', joinResponse.playerId);
+              // Store creator ID since current user created this room
+              sessionStorage.setItem('roomCreatorId', userId);
               // Navigate to waiting room
               this.router.navigate(['/waiting-room']);
             },

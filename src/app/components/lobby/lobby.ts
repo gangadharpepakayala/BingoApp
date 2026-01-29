@@ -92,6 +92,10 @@ export class LobbyComponent implements OnInit {
           sessionStorage.setItem('roomId', room.gameRoomId);
           sessionStorage.setItem('playerId', response.playerId);
           sessionStorage.setItem('roomName', room.roomName);
+          // Store room creator ID to check permissions later
+          if (room.createdByUserId) {
+            sessionStorage.setItem('roomCreatorId', room.createdByUserId);
+          }
 
           // Navigate to waiting room
           this.router.navigate(['/waiting-room']);
