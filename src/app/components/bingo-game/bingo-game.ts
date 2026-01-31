@@ -46,6 +46,11 @@ export class BingoGameComponent implements OnInit, OnDestroy {
   completedRows: Set<number> = new Set();
   completedCols: Set<number> = new Set();
 
+  // Timer properties
+  timeLeft = 10;
+  timerInterval: any = null;
+  wasMyTurn = false;
+
   constructor(
     private http: HttpClient,
     private router: Router
@@ -72,6 +77,7 @@ export class BingoGameComponent implements OnInit, OnDestroy {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
+    this.stopTurnTimer();
   }
 
   loadTicket() {
@@ -121,6 +127,15 @@ export class BingoGameComponent implements OnInit, OnDestroy {
           this.currentTurnPlayerId = room.currentTurnPlayerId || '';
           this.isMyTurn = this.currentTurnPlayerId === this.playerId;
 
+          // Timer mgmt: Start if turn just became mine or if it is mine key and timer not running
+          if (this.isMyTurn && !this.timerInterval && this.gameStatus === 'active') {
+            this.startTurnTimer();
+          } else if (!this.isMyTurn) {
+            this.stopTurnTimer();
+          }
+
+          this.wasMyTurn = this.isMyTurn;
+
           // Reset processing flag if it's my turn again (handling edge cases)
           if (this.isMyTurn && this.isProcessingTurn) {
             // Optional: only reset if enough time passed or verify logic, 
@@ -163,6 +178,45 @@ export class BingoGameComponent implements OnInit, OnDestroy {
       });
   }
 
+  startTurnTimer() {
+    if (this.timerInterval) return; // Already running
+
+    this.timeLeft = 10;
+    this.timerInterval = setInterval(() => {
+      this.timeLeft--;
+      if (this.timeLeft <= 0) {
+        this.stopTurnTimer();
+        this.autoSelectRandomNumber();
+      }
+    }, 1000);
+  }
+
+  stopTurnTimer() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
+    }
+  }
+
+  autoSelectRandomNumber() {
+    // Find all numbers 1-25 that are NOT in calledNumbers
+    const availableNumbers: number[] = [];
+    for (let i = 1; i <= 25; i++) {
+      if (!this.calledNumbers.includes(i)) {
+        availableNumbers.push(i);
+      }
+    }
+
+    if (availableNumbers.length > 0) {
+      const randomIndex = Math.floor(Math.random() * availableNumbers.length);
+      const randomNum = availableNumbers[randomIndex];
+      console.log('[Auto-Pick] Time expired. Auto-selecting:', randomNum);
+      this.callNumber(randomNum);
+    } else {
+      console.warn('[Auto-Pick] No available numbers to pick!');
+    }
+  }
+
   onTicketCellClick(num: number) {
     if (!this.isMyTurn || this.gameStatus !== 'active' || this.isProcessingTurn) {
       return;
@@ -185,11 +239,13 @@ export class BingoGameComponent implements OnInit, OnDestroy {
     }
 
     if (this.calledNumbers.includes(num)) {
-      alert('This number has already been called!');
+      // alert('This number has already been called!'); // Removed alert to be less intrusive with auto-picks
       return;
     }
 
     if (this.isProcessingTurn) return;
+
+    this.stopTurnTimer(); // Stop timer immediately on action
     this.isProcessingTurn = true;
 
     // Call the number
@@ -214,6 +270,7 @@ export class BingoGameComponent implements OnInit, OnDestroy {
         console.error('Error calling number:', err);
         alert('Failed to call number');
         this.isProcessingTurn = false;
+        // Check if we should restart timer? Probably not, just let next poll handle or leave it stopped.
       }
     });
   }

@@ -20,6 +20,10 @@
                 {{ isMyTurn ? 'Click a number on your ticket to call it!' : 'Waiting for opponent...' }}
             </p>
 
+            <div class="turn-timer" *ngIf="isMyTurn && timeLeft > 0">
+                <span [class.urgent]="timeLeft <= 5">⏳ {{ timeLeft }}s</span>
+            </div>
+
             <!-- BINGO Letters moved here -->
             <div class="bingo-status-letters">
                 <div *ngFor="let letter of bingoLetters; let i = index" class="status-letter"

@@ -140,6 +140,18 @@ $success: #10b981;
             p {
                 color: #065f46;
             }
+
+            .turn-timer {
+                margin-top: 1rem;
+                font-size: 1.5rem;
+                font-weight: 800;
+                color: $primary-color;
+
+                span.urgent {
+                    color: #ef4444; // Red for urgency
+                    animation: pulse 1s infinite;
+                }
+            }
         }
 
         // BINGO Letters in Status Banner
