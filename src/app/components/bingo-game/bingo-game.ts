@@ -128,7 +128,8 @@ export class BingoGameComponent implements OnInit, OnDestroy {
           this.isMyTurn = this.currentTurnPlayerId === this.playerId;
 
           // Timer mgmt: Start if turn just became mine or if it is mine key and timer not running
-          if (this.isMyTurn && !this.timerInterval && this.gameStatus === 'active') {
+          // AND we are not currently processing a turn
+          if (this.isMyTurn && !this.timerInterval && this.gameStatus === 'active' && !this.isProcessingTurn) {
             this.startTurnTimer();
           } else if (!this.isMyTurn) {
             this.stopTurnTimer();

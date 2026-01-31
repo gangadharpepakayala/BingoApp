@@ -146,7 +146,8 @@ $success: #10b981;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            text-align: left;
+            align-items: center; // Center horizontally
+            text-align: center; // Center text
 
             h2 {
                 margin: 0;
@@ -164,7 +165,7 @@ $success: #10b981;
             .bingo-status-letters {
                 display: flex;
                 gap: 0.5rem;
-                justify-content: flex-start; // Left align
+                justify-content: center; // Center align
                 margin-top: 1rem;
 
                 .status-letter {

@@ -32,10 +32,22 @@
       </div>
     </div>
 
-    <!-- No Winner Data -->
-    <div *ngIf="!winner" class="winner-info">
+    <!-- No Winner Data (and no rematch yet) -->
+    <div *ngIf="!winner && !rematchRequested" class="winner-info">
       <h2>Game Over!</h2>
       <p class="info-text">Thanks for playing!</p>
+    </div>
+
+    <!-- REMATCH INVITATION -->
+    <div *ngIf="rematchRequested" class="celebration rematch-view">
+      <h1 class="celebration-title">🎮 New Game!</h1>
+      <div class="winner-info">
+        <h2>Host Started a New Game</h2>
+        <p class="info-text">Are you ready to join?</p>
+        <button (click)="onAcceptRematch()" class="btn-primary pulse-btn">
+          Yes, Let's Play! 🚀
+        </button>
+      </div>
     </div>
 
     <div class="button-group">
