@@ -192,23 +192,7 @@ $success: #10b981;
         }
 
         .status-right {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            min-width: 150px;
-            border-left: 2px solid #f3f4f6;
-
-            .turn-timer {
-                font-size: 2rem;
-                font-weight: 800;
-                color: $primary-color;
-
-                span.urgent {
-                    color: #ef4444; // Red for urgency
-                    animation: pulse 1s infinite;
-                }
-            }
+            display: none; // Completely hide the old container
         }
     }
 }
@@ -257,15 +241,33 @@ $success: #10b981;
                 color: $text-dark;
             }
 
-            .lines-tracker {
-                background: #f3f4f6;
-                padding: 0.25rem 0.75rem;
-                border-radius: 20px;
-                font-size: 0.875rem;
+            .header-stats {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
 
-                .count {
+                .mini-timer {
+                    font-size: 1rem;
+                    font-weight: 700;
                     color: $primary-color;
-                    font-weight: 800;
+                    border-radius: 12px;
+
+                    .urgent {
+                        color: #dc2626;
+                        animation: pulse 1s infinite;
+                    }
+                }
+
+                .lines-tracker {
+                    background: #f3f4f6;
+                    padding: 0.25rem 0.75rem;
+                    border-radius: 20px;
+                    font-size: 0.875rem;
+
+                    .count {
+                        color: $primary-color;
+                        font-weight: 800;
+                    }
                 }
             }
         }
@@ -562,25 +564,55 @@ $success: #10b981;
         margin-top: 0.5rem;
 
         .status-card {
-            padding: 0.75rem; // Compact padding
+            padding: 0; // Remove padding from card wrapper, rely on inner padding
+            border-left-width: 4px; // Thinner border
 
-            h2 {
-                font-size: 1rem;
+            .status-content-wrapper {
+                min-height: auto; // Remove fixed min-height
+                flex-direction: column; // Stack items if needed, but horizontal is better if it fits. 
+                // Actually, let's keep it horizontal but very compact, or stack if it's too tight.
+                // Looking at the design, horizontal side-by-side might be too cramped. 
+                // Let's try to keep it side-by-side but denser.
+
+                // On very small screens, maybe row is bad. Let's see.
+                // The user wants it "decreased according to screen". 
             }
 
-            p {
-                font-size: 0.8rem;
+            .status-left {
+                padding: 0.75rem 0.5rem; // Dense padding.
+                flex: 2; // Give simpler ratio
+
+                h2 {
+                    font-size: 0.9rem; // Much smaller
+                    line-height: 1.1;
+                }
+
+                p {
+                    font-size: 0.7rem; // Tiny help text
+                    margin-top: 0.25rem;
+                }
+
+                .bingo-status-letters {
+                    gap: 0.2rem;
+                    margin-top: 0.5rem;
+
+                    .status-letter {
+                        width: 1.5rem;
+                        height: 1.5rem;
+                        font-size: 0.75rem;
+                        border-radius: 4px;
+                    }
+                }
             }
 
-            .bingo-status-letters {
-                gap: 0.25rem;
-                margin-top: 0.75rem;
+            .status-right {
+                padding: 0.5rem;
+                min-width: auto; // Allow shrinking
+                border-left: 1px solid #f3f4f6;
+                flex: 1;
 
-                .status-letter {
-                    width: 2rem;
-                    height: 2rem;
-                    font-size: 0.9rem;
-                    border-radius: 6px;
+                .turn-timer {
+                    font-size: 1.25rem; // Smaller timer
                 }
             }
         }

@@ -31,10 +31,8 @@
                     </div>
                 </div>
 
-                <div class="status-right">
-                    <div class="turn-timer" *ngIf="isMyTurn && timeLeft > 0">
-                        <span [class.urgent]="timeLeft <= 5">⏳ {{ timeLeft }}s</span>
-                    </div>
+                <div class="status-right" style="display: none;">
+                    <!-- Timer removed from here -->
                 </div>
             </div>
         </div>
@@ -46,9 +44,16 @@
             <div class="ticket-card">
                 <div class="ticket-header">
                     <h3>🎫 Your Ticket</h3>
-                    <div class="lines-tracker">
-                        <span>Lines: </span>
-                        <span class="count">{{ getCompletedLinesCount() }}/5</span>
+                    <div class="header-stats" style="display: flex; align-items: center; gap: 10px;">
+
+                        <div class="lines-tracker">
+                            <span>Lines: </span>
+                            <span class="count">{{ getCompletedLinesCount() }}/5</span>
+                        </div> <!-- Moved Timer Here -->
+                        <div class="mini-timer" *ngIf="isMyTurn && timeLeft > 0"
+                            style="font-weight: bold; color: #6366f1;">
+                            <span [class.urgent]="timeLeft <= 5">⏳ {{ timeLeft }}s</span>
+                        </div>
                     </div>
                 </div>
 

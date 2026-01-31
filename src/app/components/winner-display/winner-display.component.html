@@ -45,14 +45,14 @@
         <h2>Host Started a New Game</h2>
         <p class="info-text">Are you ready to join?</p>
         <button (click)="onAcceptRematch()" class="btn-primary pulse-btn">
-          Yes, Let's Play! 🚀
+          Play Again ! 🚀
         </button>
       </div>
     </div>
 
     <div class="button-group">
       <button *ngIf="isRoomCreator()" (click)="onStartNewGame()" class="btn-primary">
-        Start New Game
+        Play Again
       </button>
       <button (click)="onGameLobby()" class="btn-secondary">
         Game Lobby
