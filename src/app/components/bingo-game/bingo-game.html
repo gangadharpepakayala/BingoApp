@@ -13,22 +13,28 @@
     <!-- STATUS BANNER (MOVED HERE FOR RESPONSIVENESS) -->
     <div class="status-banner-container">
         <div class="status-card" [class.my-turn]="isMyTurn">
-            <h2>
-                {{ isMyTurn ? '🎯 YOUR TURN' : '⏳ OPPONENT\'S TURN' }}
-            </h2>
-            <p class="status-sub">
-                {{ isMyTurn ? 'Click a number on your ticket to call it!' : 'Waiting for opponent...' }}
-            </p>
+            <div class="status-content-wrapper">
+                <div class="status-left">
+                    <h2>
+                        {{ isMyTurn ? '🎯 YOUR TURN' : '⏳ OPPONENT\'S TURN' }}
+                    </h2>
+                    <p class="status-sub">
+                        {{ isMyTurn ? 'Click a number on your ticket to call it!' : 'Waiting for opponent...' }}
+                    </p>
 
-            <div class="turn-timer" *ngIf="isMyTurn && timeLeft > 0">
-                <span [class.urgent]="timeLeft <= 5">⏳ {{ timeLeft }}s</span>
-            </div>
+                    <!-- BINGO Letters -->
+                    <div class="bingo-status-letters">
+                        <div *ngFor="let letter of bingoLetters; let i = index" class="status-letter"
+                            [class.marked]="markedBingoLetters[i]">
+                            {{ letter }}
+                        </div>
+                    </div>
+                </div>
 
-            <!-- BINGO Letters moved here -->
-            <div class="bingo-status-letters">
-                <div *ngFor="let letter of bingoLetters; let i = index" class="status-letter"
-                    [class.marked]="markedBingoLetters[i]">
-                    {{ letter }}
+                <div class="status-right">
+                    <div class="turn-timer" *ngIf="isMyTurn && timeLeft > 0">
+                        <span [class.urgent]="timeLeft <= 5">⏳ {{ timeLeft }}s</span>
+                    </div>
                 </div>
             </div>
         </div>

@@ -110,23 +110,11 @@ $success: #10b981;
 
     .status-card {
         background: white;
-        padding: 1.5rem;
+        padding: 0; // Padding handled by wrapper/children
         border-radius: 16px;
-        text-align: center;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         border-left: 6px solid #e5e7eb;
-
-        h2 {
-            margin: 0;
-            font-size: 1.25rem;
-            color: $text-light;
-        }
-
-        p {
-            margin: 0.5rem 0 0;
-            font-size: 0.9rem;
-            color: $text-light;
-        }
+        overflow: hidden;
 
         &.my-turn {
             border-left-color: $success; // Green border
@@ -141,44 +129,83 @@ $success: #10b981;
                 color: #065f46;
             }
 
-            .turn-timer {
+            .status-right {
+                border-left-color: rgba($success, 0.2);
+            }
+        }
+
+        .status-content-wrapper {
+            display: flex;
+            align-items: stretch;
+            min-height: 120px;
+        }
+
+        .status-left {
+            flex: 1;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+
+            h2 {
+                margin: 0;
+                font-size: 1.25rem;
+                color: $text-light;
+            }
+
+            p {
+                margin: 0.5rem 0 0;
+                font-size: 0.9rem;
+                color: $text-light;
+            }
+
+            // BINGO Letters in Status Banner
+            .bingo-status-letters {
+                display: flex;
+                gap: 0.5rem;
+                justify-content: flex-start; // Left align
                 margin-top: 1rem;
-                font-size: 1.5rem;
+
+                .status-letter {
+                    width: 2.5rem;
+                    height: 2.5rem;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: #e5e7eb;
+                    color: #6b7280;
+                    font-weight: bold;
+                    border-radius: 8px;
+                    font-size: 1.1rem;
+                    transition: all 0.3s ease;
+
+                    &.marked {
+                        background: linear-gradient(135deg, $success 0%, #059669 100%);
+                        color: white;
+                        box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+                        transform: scale(1.1);
+                    }
+                }
+            }
+        }
+
+        .status-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            min-width: 150px;
+            border-left: 2px solid #f3f4f6;
+
+            .turn-timer {
+                font-size: 2rem;
                 font-weight: 800;
                 color: $primary-color;
 
                 span.urgent {
                     color: #ef4444; // Red for urgency
                     animation: pulse 1s infinite;
-                }
-            }
-        }
-
-        // BINGO Letters in Status Banner
-        .bingo-status-letters {
-            display: flex;
-            gap: 0.5rem;
-            justify-content: center;
-            margin-top: 1rem;
-
-            .status-letter {
-                width: 3rem;
-                height: 3rem;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background: #e5e7eb;
-                color: #6b7280;
-                font-weight: bold;
-                border-radius: 8px;
-                font-size: 1.25rem;
-                transition: all 0.3s ease;
-
-                &.marked {
-                    background: linear-gradient(135deg, $success 0%, #059669 100%);
-                    color: white;
-                    box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
-                    transform: scale(1.1);
                 }
             }
         }
