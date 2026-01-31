@@ -55,7 +55,7 @@
                                     [class.called]="isNumberCalled(num)" [class.marked]="isMarked(i, j)"
                                     [class.my-pick]="isMyPick(num)" [class.opp-pick]="isOppPick(num)"
                                     [class.clickable-turn]="isMyTurn && !isNumberCalled(num)"
-                                    [class.strike-through]="isLineComplete(i, j)">
+                                    [class.strike-row]="completedRows.has(i)" [class.strike-col]="completedCols.has(j)">
                                     {{ num }}
                                     <div class="mark-indicator" *ngIf="isMarked(i, j)">✓</div>
                                 </td>

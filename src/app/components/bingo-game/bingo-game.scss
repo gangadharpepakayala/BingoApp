@@ -648,9 +648,41 @@ $success: #10b981;
 }
 
 // Add strikethrough effect for completed lines
-.strike-through {
-    text-decoration: line-through;
-    text-decoration-color: $success;
-    text-decoration-thickness: 3px;
-    opacity: 0.8;
+// Add strikethrough effect for completed lines
+.strike-row {
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        height: 5px; // Visible thickness
+        background-color: $success;
+        transform: translateY(-50%);
+        opacity: 0.9;
+        pointer-events: none;
+        z-index: 10;
+        border-radius: 10px;
+    }
+}
+
+.strike-col {
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 5px; // Visible thickness
+        background-color: $success;
+        transform: translateX(-50%);
+        opacity: 0.9;
+        pointer-events: none;
+        z-index: 10;
+        border-radius: 10px;
+    }
 }
