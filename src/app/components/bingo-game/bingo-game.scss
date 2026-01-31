@@ -546,8 +546,6 @@ $success: #10b981;
         }
     }
 
-
-
     .split-layout {
         padding: 0.5rem;
         gap: 1rem;
@@ -647,4 +645,12 @@ $success: #10b981;
     100% {
         opacity: 1;
     }
+}
+
+// Add strikethrough effect for completed lines
+.strike-through {
+    text-decoration: line-through;
+    text-decoration-color: $success;
+    text-decoration-thickness: 3px;
+    opacity: 0.8;
 }

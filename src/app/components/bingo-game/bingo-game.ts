@@ -42,6 +42,10 @@ export class BingoGameComponent implements OnInit, OnDestroy {
 
   private intervalId: any;
 
+  isProcessingTurn = false;
+  completedRows: Set<number> = new Set();
+  completedCols: Set<number> = new Set();
+
   constructor(
     private http: HttpClient,
     private router: Router
@@ -116,6 +120,16 @@ export class BingoGameComponent implements OnInit, OnDestroy {
         next: (room) => {
           this.currentTurnPlayerId = room.currentTurnPlayerId || '';
           this.isMyTurn = this.currentTurnPlayerId === this.playerId;
+
+          // Reset processing flag if it's my turn again (handling edge cases)
+          if (this.isMyTurn && this.isProcessingTurn) {
+            // Optional: only reset if enough time passed or verify logic, 
+            // checks usually happen on action, so here we just sync status
+          }
+          if (!this.isMyTurn) {
+            this.isProcessingTurn = false;
+          }
+
           this.gameStatus = room.status;
 
           if (this.gameStatus === 'completed') {
@@ -150,7 +164,7 @@ export class BingoGameComponent implements OnInit, OnDestroy {
   }
 
   onTicketCellClick(num: number) {
-    if (!this.isMyTurn || this.gameStatus !== 'active') {
+    if (!this.isMyTurn || this.gameStatus !== 'active' || this.isProcessingTurn) {
       return;
     }
 
@@ -175,6 +189,9 @@ export class BingoGameComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (this.isProcessingTurn) return;
+    this.isProcessingTurn = true;
+
     // Call the number
     this.http.post(`${environment.apiUrl}/api/draw`, {
       roomId: this.roomId,
@@ -190,11 +207,13 @@ export class BingoGameComponent implements OnInit, OnDestroy {
         }
 
         this.numberToCall = '';
+        this.isMyTurn = false; // Optimistically lock UI
         this.passTurn();
       },
       error: (err) => {
         console.error('Error calling number:', err);
         alert('Failed to call number');
+        this.isProcessingTurn = false;
       }
     });
   }
@@ -210,12 +229,23 @@ export class BingoGameComponent implements OnInit, OnDestroy {
               JSON.stringify(otherPlayer.playerId),
               { headers: { 'Content-Type': 'application/json' } }
             ).subscribe({
-              next: () => this.loadGameState(),
-              error: (err) => console.error('Error passing turn:', err)
+              next: () => {
+                this.loadGameState();
+                // isProcessingTurn remains true until we lose turn or state updates, 
+                // but safely we can leave it or manage it. 
+                // Since isMyTurn is false, UI is locked anyway.
+              },
+              error: (err) => {
+                console.error('Error passing turn:', err);
+                this.isProcessingTurn = false; // Re-enable if failed
+              }
             });
           }
         },
-        error: (err) => console.error('Error getting players:', err)
+        error: (err) => {
+          console.error('Error getting players:', err);
+          this.isProcessingTurn = false;
+        }
       });
   }
 
@@ -245,11 +275,14 @@ export class BingoGameComponent implements OnInit, OnDestroy {
 
   checkBingoLetters() {
     const completedLines: number[] = [];
+    this.completedRows.clear();
+    this.completedCols.clear();
 
     // Check horizontal lines (rows)
     for (let i = 0; i < 5; i++) {
       if (this.myTicket.marked[i].every(m => m === true)) {
         completedLines.push(i);
+        this.completedRows.add(i);
       }
     }
 
@@ -258,6 +291,7 @@ export class BingoGameComponent implements OnInit, OnDestroy {
       const columnComplete = this.myTicket.marked.every(row => row[j] === true);
       if (columnComplete) {
         completedLines.push(5 + j); // Offset by 5 for columns
+        this.completedCols.add(j);
       }
     }
 
@@ -345,5 +379,9 @@ export class BingoGameComponent implements OnInit, OnDestroy {
   isOppPick(num: number): boolean {
     // If it's in history but NOT my ID, it's opp (or null if legacy)
     return this.drawnHistory.some(d => d.number === num && d.playerId !== this.playerId && d.playerId !== null);
+  }
+
+  isLineComplete(row: number, col: number): boolean {
+    return this.completedRows.has(row) || this.completedCols.has(col);
   }
 }

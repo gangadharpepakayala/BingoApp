@@ -54,7 +54,8 @@
                                 <td *ngFor="let num of row; let j = index" (click)="onTicketCellClick(num)"
                                     [class.called]="isNumberCalled(num)" [class.marked]="isMarked(i, j)"
                                     [class.my-pick]="isMyPick(num)" [class.opp-pick]="isOppPick(num)"
-                                    [class.clickable-turn]="isMyTurn && !isNumberCalled(num)">
+                                    [class.clickable-turn]="isMyTurn && !isNumberCalled(num)"
+                                    [class.strike-through]="isLineComplete(i, j)">
                                     {{ num }}
                                     <div class="mark-indicator" *ngIf="isMarked(i, j)">✓</div>
                                 </td>
